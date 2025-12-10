@@ -1,0 +1,35 @@
+لما
+
+montiego.gamer.gd/girxo/cikxo/montiego
+
++
+
+100
+
+Hesap Başarıyla Oluşturuldu
+
+@User:Pass:
+
+@tunnel-edmnwg:mkkjao
+
+Kullanıcı Adı:
+
+tunnel-edmnwg
+
+Şifre:
+
+mkkjao
+
+Public Key (PubKey):
+
+9673e27b0ed9d3d11d6d439e24a928d575bb666807b0d088589 d339906c58b6d
+
+NameServer (NS):
+
+dns.de-2.stunnel.cc
+
+Domain Name System (DNS):
+
+212.65.133.200:53
+
+Developer: MONTIEGO
