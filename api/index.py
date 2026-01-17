@@ -3,14 +3,21 @@ import httpx
 
 app = FastAPI()
 
-@app.get("/")  # /api/proxy
-async def proxy(request: Request, url: str = None):
+@app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+async def proxy(request: Request, path: str):
+    # url param bekle
+    url = request.query_params.get("url")
     if not url:
-        return {"error": "url query param missing"}
+        return {"error": "url query param is required"}
 
-    # Gelen query ve headers ile hedef siteye getir
+    # headers ve method
     headers = dict(request.headers)
-    async with httpx.AsyncClient() as client:
-        res = await client.get(url, headers=headers)
+    method = request.method
 
-    return {"status_code": res.status_code, "content": res.text}
+    async with httpx.AsyncClient() as client:
+        res = await client.request(method, url, headers=headers, content=await request.body())
+
+    return {
+        "status_code": res.status_code,
+        "body": res.text
+    }
