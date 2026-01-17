@@ -1,7 +1,14 @@
-from fastapi import FastAPI
+from http.server import BaseHTTPRequestHandler
+import json
 
-app = FastAPI()
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
 
-@app.get("/")
-def root():
-    return {"message": "Python API çalışıyor 🚀"}
+        response = {
+            "message": "Python Vercel function çalışıyor 🚀"
+        }
+
+        self.wfile.write(json.dumps(response).encode())
