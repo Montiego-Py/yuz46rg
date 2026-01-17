@@ -1,42 +1,16 @@
-import requests
-import json
+from fastapi import FastAPI, Request
+import httpx
 
-def handler(request):
-    # query ile target al
-    params = request.query
-    target = params.get("url")
-    method = params.get("method", "GET").upper()
+app = FastAPI()
 
-    if not target:
-        return {
-            "statusCode": 400,
-            "body": "URL parametresi gerekli"
-        }
+@app.get("/")  # /api/proxy
+async def proxy(request: Request, url: str = None):
+    if not url:
+        return {"error": "url query param missing"}
 
-    try:
-        # veri alma (POST vs.)
-        body = None
-        if method in ["POST","PUT","PATCH"]:
-            body = request.body
+    # Gelen query ve headers ile hedef siteye getir
+    headers = dict(request.headers)
+    async with httpx.AsyncClient() as client:
+        res = await client.get(url, headers=headers)
 
-        res = requests.request(
-            method,
-            target,
-            headers=dict(request.headers),
-            data=body,
-            timeout=15
-        )
-
-        return {
-            "statusCode": res.status_code,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({
-                "status": res.status_code,
-                "data": res.text
-            })
-        }
-    except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": f"Proxy error: {str(e)}"
-        }
+    return {"status_code": res.status_code, "content": res.text}
