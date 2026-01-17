@@ -1,44 +1,45 @@
-from http.server import BaseHTTPRequestHandler
-import requests
 import json
+import requests
 from urllib.parse import parse_qs, urlparse
 
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        query = parse_qs(urlparse(self.path).query)
-        
-        target_url = query.get('url', [None])[0]
-        method = query.get('method', ['GET'])[0]
-        headers = json.loads(query.get('headers', ['{}'])[0])
-        payload = query.get('payload', [None])[0]
+def handler(request):
+    try:
+        # Query string al
+        parsed = urlparse(request.url)
+        query = parse_qs(parsed.query)
+
+        target_url = query.get("url", [None])[0]
+        method = query.get("method", ["GET"])[0]
+        headers = json.loads(query.get("headers", ["{}"])[0])
+        payload = query.get("payload", [None])[0]
 
         if not target_url:
-            self.send_response(400)
-            self.end_headers()
-            self.wfile.write(b"URL eksik!")
-            return
+            return {
+                "statusCode": 400,
+                "body": "URL eksik!"
+            }
 
-        try:
-            # İsteği hedefe gönder
-            res = requests.request(
-                method=method,
-                url=target_url,
-                headers=headers,
-                data=payload,
-                timeout=30,
-                verify=False # SSL hatalarını görmezden gel
-            )
+        res = requests.request(
+            method=method,
+            url=target_url,
+            headers=headers,
+            data=payload,
+            timeout=15
+        )
 
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            
-            response_data = {
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps({
                 "status_code": res.status_code,
                 "body": res.text
-            }
-            self.wfile.write(json.dumps(response_data).encode())
-        except Exception as e:
-            self.send_response(500)
-            self.end_headers()
-            self.wfile.write(str(e).encode())
+            })
+        }
+
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": str(e)
+        }
