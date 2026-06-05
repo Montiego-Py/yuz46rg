@@ -1,0 +1,24 @@
+
+TELEGRAM: MONTİEGO > @Vakitsizce
+Kullanıcı Adı: tunnel-ukssfm
+Şifre: drpnjw
+PublicKey: 9673e27b0ed9d3d11d6d439e24a928d575bb666807b0d088589d339906c58b6d
+NameServer: dns.tr-1.stunnel.cc
+DNS: 212.65.133.200:53
+
+Host: tr-1.stunnel.cc
+SlowDNS: dns.tr-1.stunnel.cc 
+IPv4: 193.124.46.134
+IPv6: 2605:e440:11::173
+Dropbear: 143, 444, 666, 5555, 701, 179
+Stunnel: 443, 110, 587
+WebSocket: 80
+Server Identifier: tr-1.stunnel.cc
+NoobzVpn: tcp_plain: 2053, tcp_ssl: 2083
+UDPGW: 7100, 7200, 7300, 7400, 7500, 7600, 7700
+Squid Proxy: 8080, 3128, 8000
+
+WebSocket Payload:
+GET / HTTP/1.1[crlf]Host: [host][crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Key: 45l8FAYocAvzDC3umPbJUQ==[crlf]Sec-WebSocket-Version: 13[crlf][crlf]
+
+Oluşturulma Tarihi: 2026-06-05T12:17:30.590Z
